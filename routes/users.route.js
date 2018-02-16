@@ -7,9 +7,23 @@ router.get('/', function (request, response) {
 });
 
 router.post('/', function (request, response) {
-userModel.create(request.body, function (err, user) {
-  
-});
+// userModel.create(request.body, function (err, user) {
+// });
+  var newUser = new userModel(request.body);
+  newUser.save(function (err, userCreated) {
+    if(err){
+        return response.status(500).send({
+          message: 'There was a problem at registering the user',
+          error: err
+        });
+    }
+    else{ 
+      response.send({
+        message: 'A new user has been created',
+        data: userCreated
+      });
+    }
+  });
 });
 
 router.put('/', function (request, response) {
