@@ -76,8 +76,22 @@ router.put('/:id', function (request, response) {
   });
 });
 
-router.delete('/', function (request, response) {
-  response.send('accediendo a usuarios con el metodo delete');
+router.delete('/:id', function (request, response) {
+  // response.send('accediendo a usuarios con el metodo delete');
+  userModel.findByIdAndRemove(request.params.id, function (err, userToDelete) {
+    if (err) {
+      return response.status(500).send({
+        message: 'There was a problem deleting a user',
+        error: err
+      });
+    }
+    else {
+      response.send({
+        message: 'The user has been deleted',
+        data: userToDelete
+      });
+    }
+  });
 });
 
 router.get('/find', function (request, response) {
