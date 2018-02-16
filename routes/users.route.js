@@ -57,9 +57,23 @@ router.post('/', function (request, response) {
   });
 });
 
-router.put('/', function (request, response) {
-  response.send('accediendo a usuarios con el metodo put');
-  console.log('log put: ', request.body);
+router.put('/:id', function (request, response) {
+  // response.send('accediendo a usuarios con el metodo put');
+  // console.log('log put: ', request.body);
+  userModel.findOneAndUpdate(request.params.id, request.body, {new: true}, function (err,userUpdated) {
+    if (err) {
+      return response.status(500).send({
+        message: 'There was a problem updating a user',
+        error: err
+      });
+    }
+    else {
+      response.send({
+        message: 'A user has been updated',
+        data: userUpdated
+      });
+    }
+  });
 });
 
 router.delete('/', function (request, response) {
