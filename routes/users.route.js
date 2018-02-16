@@ -3,7 +3,21 @@ var router = express.Router();
 var userModel = require('../models/user.model');
 
 router.get('/', function (request, response) {
-  response.send('accediendo a usuarios con el metodo get');
+  // response.send('accediendo a usuarios con el metodo get');
+  userModel.find({}, {}, null, function (err, userList) {
+    if(err){
+      return response.status(500).send({
+        message: 'There was a problem retrieving the user list',
+        error: err
+      });
+    }
+    else{
+      response.send({
+        message: 'The user list has been retrieved',
+        data: userList
+      });
+    }
+  });
 });
 
 router.post('/', function (request, response) {
