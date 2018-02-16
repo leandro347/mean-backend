@@ -20,6 +20,23 @@ router.get('/', function (request, response) {
   });
 });
 
+router.get('/:id', function (request, response) {
+  userModel.findById(request.params.id, {}, null, function (err, userFounded) {
+    if (err) {
+      return response.status(500).send({
+        message: 'There was a problem retrieving the user',
+        error: err
+      });
+    }
+    else {
+      response.send({
+        message: 'User founded by Id',
+        data: userFounded
+      });
+    }
+  });  
+});
+
 router.post('/', function (request, response) {
 // userModel.create(request.body, function (err, user) {
 // });
